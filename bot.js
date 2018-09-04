@@ -5,16 +5,16 @@ var Twit = require('twit')
 var config = require('./config');
 var T = new Twit(config);
 
-var params = {
-    q: 'wordpress',
-    count: 2
+var tweet = {
+    status: 'Hello from #raunakhajela twitter bot',
 };
 
-T.get('search/tweets', params, gotData);
+T.post('statuses/update', tweet, tweeted);
 
-function gotData(err, data, response){
-    var tweets = data.statuses;
-    for(var i=0; i < tweets.length; i++){
-        console.log(tweets[i].text);
+function tweeted(err, data, response){
+    if(err){
+        console.log("Something went wrong!");
+    }else{
+        console.log("It worked!");
     }
 }
