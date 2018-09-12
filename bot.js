@@ -1,19 +1,30 @@
-console.log('The bot is starting');
+console.log('The follow bot is starting');
 
 var Twit = require('twit')
 
 var config = require('./config');
 var T = new Twit(config);
 
-tweetIt();
-setInterval(tweetIt, 1000*20);
+//setting up a user stream
+var stream = T.stream('user');
 
-function tweetIt(){
+//anytime someone follows me
+stream.on('follow', followed);
 
-    var r = Math.floor(Math.random()*100);
+function followed(eventMsg){
+    console.log('Follow event!');
+    var name = eventMsg.source.name;
+    var screenName = eventMsg.source.screen_name;
+    tweetIt('.@' + screenName + ' do you like pizza?');
+}
+
+// tweetIt();
+// setInterval(tweetIt, 1000*20);
+
+function tweetIt(txt){
 
     var tweet = {
-        status: 'Here is a random number ' + r + ' #raunakhajela from twitter bot'
+        status: txt
     };
 
     T.post('statuses/update', tweet, tweeted);
